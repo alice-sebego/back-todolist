@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  id_category   String @id @default(uuid()) @unique(map: "id_category_UNIQUE") @db.VarChar(36)
+  name_category String @unique(map: "name_category_UNIQUE") @db.VarChar(45)
+  task          task[]
+}
+
+model group {
+  id_group       String           @id @default(uuid()) @unique(map: "id_group_UNIQUE") @db.VarChar(36)
+  name_group     String           @unique(map: "name_group_UNIQUE") @db.VarChar(45)
+  user_has_group user_has_group[]
+}
+
+model status {
+  id_status   String @id @default(uuid()) @unique(map: "id_status_UNIQUE") @db.VarChar(36)
+  name_status String @unique(map: "name_status_UNIQUE") @db.VarChar(45)
+  user        user[]
+}
+
+model task {
+  id_task              String    @default(uuid())  @unique(map: "id_task_UNIQUE") @db.VarChar(36)
+  title_task           String    @db.VarChar(45)
+  isDone_task          Int       @db.TinyInt
+  category_id_category String    @db.VarChar(36)
+  user_id_user         String    @db.VarChar(36)
+  createdAt_task       DateTime? @db.DateTime(0)
+  updatedAt_task       DateTime? @db.DateTime(0)
+  start_task           DateTime? @db.DateTime(0)
+  category             category  @relation(fields: [category_id_category], references: [id_category], onDelete: NoAction, onUpdate: NoAction, map: "fk_task_category1")
+  user                 user      @relation(fields: [user_id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "fk_task_user1")
+
+  @@id([id_task, category_id_category, user_id_user])
+  @@index([category_id_category], map: "fk_task_category1_idx")
+  @@index([user_id_user], map: "fk_task_user1_idx")
+}
+
+model user {
+  id_user          String           @default(uuid()) @unique(map: "id_user_UNIQUE") @db.VarChar(36)
+  username_user    String           @unique(map: "username_user_UNIQUE") @db.VarChar(45)
+  email_user       String           @unique(map: "email_user_UNIQUE") @db.VarChar(45)
+  password_user    String           @db.VarChar(255)
+  createdAt_user   DateTime?        @db.DateTime(0)
+  updateAt_user    DateTime?        @db.DateTime(0)
+  nbDoneTask_user  Int?
+  status_id_status String           @db.VarChar(36)
+  status           status           @relation(fields: [status_id_status], references: [id_status], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_status1")
+  task             task[]
+  user_has_group   user_has_group[]
+
+  @@id([id_user, status_id_status])
+  @@index([status_id_status], map: "fk_user_status1_idx")
+}
+
+model user_has_group {
+  user_id_user          String @db.VarChar(36)
+  user_status_id_status String @db.VarChar(36)
+  group_id_group        String @db.VarChar(36)
+  group                 group  @relation(fields: [group_id_group], references: [id_group], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_has_group_group1")
+  user                  user   @relation(fields: [user_id_user, user_status_id_status], references: [id_user, status_id_status], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_has_group_user1")
+
+  @@id([user_id_user, user_status_id_status, group_id_group])
+  @@index([group_id_group], map: "fk_user_has_group_group1_idx")
+  @@index([user_id_user, user_status_id_status], map: "fk_user_has_group_user1_idx")
+}
