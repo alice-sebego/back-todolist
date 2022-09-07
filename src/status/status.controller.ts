@@ -4,7 +4,7 @@ import { StatusDto } from './dto';
 import { StatusService } from './status.service';
 
 @UseGuards(JwtGuard)
-@Controller()
+@Controller('status')
 export class StatusController {
   constructor(private statusService: StatusService) {}
 
