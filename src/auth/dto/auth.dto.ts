@@ -9,21 +9,21 @@ import {
 export class AuthDto {
   @IsString()
   @IsNotEmpty()
-  username_user: string;
+  userName: string;
 
   @IsEmail()
   @IsNotEmpty()
-  email_user: string;
+  email: string;
 
   @IsString()
   @IsNotEmpty()
-  password_user: string;
+  password: string;
 
   @IsOptional()
   @IsDateString()
-  createdAt_user?: Date;
+  createdAt?: Date;
 
   @IsOptional()
   @IsDateString()
-  updateAt_user?: Date;
+  updatedAt?: Date;
 }
