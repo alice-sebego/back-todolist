@@ -12,8 +12,8 @@ export class TaskDto {
   title: string;
 
   @IsBoolean()
-  @IsNotEmpty()
-  isDone: boolean;
+  @IsOptional()
+  isDone?: boolean;
 
   @IsOptional()
   @IsDateString()
