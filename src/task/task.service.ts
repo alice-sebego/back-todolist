@@ -46,4 +46,20 @@ export class TaskService {
       },
     });
   }
+
+  async deleteTask(id_task: string) {
+    const task = await this.prisma.task.findUnique({
+      where: {
+        id: id_task,
+      },
+    });
+
+    if (!task) throw new ForbiddenException('Task not found');
+
+    return await this.prisma.task.delete({
+      where: {
+        id: id_task,
+      },
+    });
+  }
 }

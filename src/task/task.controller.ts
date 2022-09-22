@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -40,5 +43,11 @@ export class TaskController {
   @Patch(':id')
   editTask(@Param('id') TaskId: string, @Body() dto: TaskDto) {
     return this.taskService.editTask(TaskId, dto);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':id')
+  deleteTask(@Param('id') taskId: string) {
+    return this.taskService.deleteTask(taskId);
   }
 }
