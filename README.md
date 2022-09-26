@@ -58,6 +58,41 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Development Environment
+
+Use Docker in order to create an image for a local database
+
+```bash
+# build and lauch docker image
+$ docker compose up dev-db -d
+```
+
+## Database
+
+You can use PostgreSQL for the database ;
+
+At the root of this project, create a .env file with the environment variables
+
+NB : the local database is created thanks `docker-compose.yml` file
+
+```
+DATABASE_URL="postgresql://postgres:456@localhost:5434/todolist?schema=public"
+JWT_SECRET="InternetIsTheNewFrontierOfScience"
+```
+
+## Prisma
+
+```bash
+# generate cmd
+$ npx prisma generate
+
+# build db structure depending model on prisma schema
+$ npx prisma db push
+
+# display prisma stuid UI on localhost:5555
+$ npx prisma studio
+```
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
