@@ -7,7 +7,6 @@ import {
   HttpStatus,
   Param,
   Patch,
-  Post,
   UseGuards,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
@@ -30,14 +29,6 @@ export class UserController {
     userId: string,
   ) {
     return this.userService.getUserById(userId);
-  }
-
-  @Post()
-  addUser(
-    @Body()
-    dto: UserDto,
-  ) {
-    return this.userService.addUser(dto);
   }
 
   @Patch(':id')

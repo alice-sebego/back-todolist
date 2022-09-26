@@ -1,4 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserDto } from './dto';
 
@@ -18,16 +19,6 @@ export class UserService {
     });
   }
 
-  async addUser(dto: UserDto) {
-    const user = await this.prisma.user.create({
-      data: {
-        ...dto,
-      },
-    });
-
-    return user;
-  }
-
   async editUser(id_user: string, dto: UserDto) {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -37,12 +28,16 @@ export class UserService {
 
     if (!user) throw new ForbiddenException('User not found');
 
+    const hash = await argon.hash(dto.hash);
+
     return this.prisma.user.update({
       where: {
         id: id_user,
       },
       data: {
-        ...dto,
+        userName: dto.userName,
+        email: dto.email,
+        hash,
       },
     });
   }

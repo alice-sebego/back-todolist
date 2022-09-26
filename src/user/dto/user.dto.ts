@@ -16,8 +16,7 @@ export class UserDto {
   email: string;
 
   @IsString()
-  @IsNotEmpty()
-  hash: string;
+  hash?: string;
 
   @IsOptional()
   @IsDateString()
