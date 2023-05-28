@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
+import { JwtGuard } from './auth/guard';
 
 @Module({
   imports: [
@@ -15,9 +16,9 @@ import { TaskModule } from './task/task.module';
     AuthModule,
     PrismaModule,
     UserModule,
-    TaskModule,
+    TaskModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtGuard],
 })
 export class AppModule {}
